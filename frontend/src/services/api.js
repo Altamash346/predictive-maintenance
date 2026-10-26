@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+// In production, use the Render backend URL; in dev, Vite proxy handles /api
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
 
 export async function fetchDashboardSummary() {
   const res = await fetch(`${API_BASE}/dashboard`);
