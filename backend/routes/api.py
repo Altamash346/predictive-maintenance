@@ -377,7 +377,7 @@ def trigger_etl_run():
 # ====================================================================
 @router.get("/olap/rollup")
 def olap_rollup(
-    dimension: str = Query("month", regex="^(year|quarter|month|product_type|sensor_wear)$"),
+    dimension: str = Query("month", pattern="^(year|quarter|month|product_type|sensor_wear)$"),
     measure: str = Query("failure_count")
 ):
     """Executes an OLAP ROLL-UP operation."""
@@ -385,7 +385,7 @@ def olap_rollup(
 
 @router.get("/olap/drilldown")
 def olap_drilldown(
-    hierarchy: str = Query("quarter_to_month", regex="^(quarter_to_month|month_to_day|product_failure)$"),
+    hierarchy: str = Query("quarter_to_month", pattern="^(quarter_to_month|month_to_day|product_failure)$"),
     parent_value: str = Query("Q2")
 ):
     """Executes an OLAP DRILL-DOWN operation."""
@@ -393,7 +393,7 @@ def olap_drilldown(
 
 @router.get("/olap/slice")
 def olap_slice(
-    dimension: str = Query("product_type", regex="^(product_type|failure_status|torque_category|tool_wear_category|quarter)$"),
+    dimension: str = Query("product_type", pattern="^(product_type|failure_status|torque_category|tool_wear_category|quarter)$"),
     value: str = Query("M")
 ):
     """Executes an OLAP SLICE operation."""
@@ -406,9 +406,9 @@ def olap_dice(request: DiceFilterRequest):
 
 @router.get("/olap/pivot")
 def olap_pivot(
-    row_dim: str = Query("product_type", regex="^(product_type|tool_wear_category|speed_category|quarter)$"),
-    col_dim: str = Query("failure_status", regex="^(failure_status|failure_type|torque_category|temp_category)$"),
-    metric: str = Query("count", regex="^(count|avg_torque|avg_tool_wear|avg_speed)$")
+    row_dim: str = Query("product_type", pattern="^(product_type|tool_wear_category|speed_category|quarter)$"),
+    col_dim: str = Query("failure_status", pattern="^(failure_status|failure_type|torque_category|temp_category)$"),
+    metric: str = Query("count", pattern="^(count|avg_torque|avg_tool_wear|avg_speed)$")
 ):
     """Executes an OLAP PIVOT (Rotate) cross-tabulation operation."""
     return olap_service.execute_pivot(row_dim=row_dim, col_dim=col_dim, value_metric=metric)
